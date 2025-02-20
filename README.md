@@ -51,8 +51,11 @@ cash_flow = stock.cashflow.T  # Cash Flow Statement
 ```
 The function tries to extract specific key financial metrics:
 Income Statement: 'Total Revenue', 'Net Income'
+
 Balance Sheet: 'Total Assets', 'Total Liabilities'
+
 Cash Flow Statement: 'Operating Cash Flow'
+
 Concatenates the extracted data into a single DataFrame.
 
 ```python
