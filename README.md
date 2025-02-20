@@ -497,6 +497,52 @@ LSTM neurons "remember" by using the cell state to store relevant information, w
 The output gate controls what part of the memory is passed on to the next time step or used for predictions.
 The LSTM learns by adjusting the weights of these gates through backpropagation, ensuring that it can better capture temporal dependencies and improve prediction accuracy over time.
 
+
+## Model Optimization (Inputs and outputs)
+
+## Model Definition
+
+Model(inputs, outputs): This defines the model architecture by specifying the input layer and output layer.
+
+inputs: The input to the model, which is defined at the beginning of your code (in this case, inputs = Input(shape=(seq_length, feature_dim))). This specifies the shape of the data that the model will receive. For example, if you're feeding in stock data, it might have dimensions like (30 days, 5 features), where 30 is the number of time steps (days), and 5 is the number of features (e.g., Open, High, Low, Close, Volume).
+outputs: The final output of the model, which is defined in the last part of the model (in this case, outputs = Dense(1, activation="linear")(x)). This specifies the prediction the model will make—whether that’s a stock price, classification label, or other value.
+Essentially, this line connects all the layers and defines how the model will flow from the input to the output.
+
+```python
+model = Model(inputs, outputs)
+```
+## Model Compilation
+
+This line compiles the model, preparing it for training. Let's go over the individual components:
+
+optimizer="adam": This specifies the optimizer to use for updating the weights during training.
+
+Adam (Adaptive Moment Estimation) is a popular optimizer that combines the benefits of AdaGrad and RMSProp. It adjusts the learning rate based on the momentums of the gradient, which helps the model converge faster and can avoid oscillations or overshooting.
+In the case of stock price prediction, Adam is often used because it adapts the learning rate and works well with noisy, high-dimensional data.
+loss="mse": This specifies the loss function, which measures how far the model's predictions are from the true values.
+
+MSE (Mean Squared Error) is a commonly used loss function for regression tasks (like predicting stock prices). It calculates the average of the squared differences between the predicted values and the actual values.
+For example, if the model predicts a stock price of $100, but the actual price is $105, the MSE would penalize this prediction with a larger error compared to smaller errors, which helps the model learn to minimize prediction errors.
+metrics=["mae"]: This specifies the metrics that you want to track during training.
+
+MAE (Mean Absolute Error) is another metric that measures the average absolute difference between the predicted and actual values. Unlike MSE, MAE is less sensitive to outliers.
+Both MSE and MAE are useful for regression tasks, and MAE gives you a more interpretable measure of prediction error (in the same units as the stock price, for example).
+
+```python
+model.compile(optimizer="adam", loss="mse", metrics=["mae"])
+```
+
+## Returning Model for Train or Test
+
+This returns the compiled model from the function so that you can use it for training, evaluation, or prediction outside the function.
+
+Why return the model? Returning the model allows you to use it in other parts of your code for training (model.fit()), evaluation (model.evaluate()), or making predictions (model.predict()).
+
+```python
+return model
+```
+
+
 ## Results
 - The model predicts the next closing stock price for AAPL.
 - Compares the predicted price with actual market data.
