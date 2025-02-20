@@ -373,6 +373,24 @@ Head 3: Relationships between price and volume (e.g., how volume correlates with
 ```python
 attn_output = MultiHeadAttention(num_heads=8, key_dim=feature_dim)(x, x)
 ```
+## Layer Normalization
+
+attn_output + x:
+
+This is called a residual connection or skip connection. The idea is to add the output of the multi-head attention (attn_output) with the input (x), which helps the model preserve information from earlier layers.
+Why add them? This helps the network avoid vanishing gradients during training, as the gradients can flow more easily through the network without being diminished.
+LayerNormalization():
+
+After the residual connection, the combined output (attn_output + x) is passed through LayerNormalization.
+
+Layer normalization normalizes the output across the features of each time step. This means that for each time step, the mean and variance of the features are adjusted to have a zero mean and unit variance. It ensures that the output of the residual connection is on a similar scale, preventing issues like exploding or vanishing gradients and improving the stability of training.
+
+Why normalize here? The attention mechanism can introduce very large or very small values due to the self-attention computation. Layer normalization ensures that these values are standardized, which helps the model to train more efficiently and to converge faster.
+
+```python
+    x = LayerNormalization()(attn_output + x)
+```
+
 
 ## Results
 - The model predicts the next closing stock price for AAPL.
