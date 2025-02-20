@@ -289,11 +289,86 @@ Without padding, the output would shrink with each convolution step.
     x = Conv1D(filters=128, kernel_size=5, activation="relu", padding="same")(inputs)
     x = Conv1D(filters=64, kernel_size=3, activation="relu", padding="same")(x)
 ```
-
 Final output first two CONV Layers:
 
 The final output is a transformed version of your stock price data, with local patterns (like price rises or falls) detected by the filters and non-linearities introduced by ReLU.
 The model can then use these transformed features to predict whether the stock price will rise or fall in the future.
+
+## What is MultiHeadAttention?
+
+MultiHeadAttention is a mechanism used in transformers (like the one we're using in here) to allow the model to focus on different parts of the input sequence. It does this through multiple "attention heads," each of which learns to focus on different aspects or relationships in the data.
+
+## Components of MultiHeadAttention:
+
+num_heads=8:
+
+This means that the model is using 8 separate attention heads.
+Each attention head will focus on a different aspect of the input. For example, one head might focus on short-term trends in the stock prices, another might focus on long-term trends, another might look at relationships between price and volume, etc.
+These heads operate in parallel, learning different representations of the input sequence.
+
+key_dim=feature_dim:
+
+key_dim refers to the dimension of the query, key, and value vectors.
+feature_dim here represents the number of features in your input data (e.g., number of features in the stock price data such as Open, High, Low, Close, Volume).
+Essentially, this defines the size of the vectors that the attention mechanism operates on.
+
+(x, x):
+
+This is the key part where we’re using self-attention.
+Both the query (Q) and key (K) are set to x (the input data). This means that the attention mechanism will look at the relationships within the input data itself. The value (V) is also taken from x.
+In other words, you're saying: "I want to compute how each part of the sequence (x) relates to every other part of the sequence (x) in terms of their features."
+
+## How Does it Work?
+
+Input Data (x):
+
+Your input x is stock data over time, where each time step has several features (e.g., Open, High, Low, Close, Volume).
+Suppose x is a sequence of 5 time steps, and each time step has feature_dim features (e.g., Open, High, Low, Close, Volume).
+
+Query, Key, and Value:
+
+For each attention head, the input x is used to create three representations: queries, keys, and values. These are done using learned linear transformations (weights) specific to each attention head.
+
+The MultiHeadAttention layer will split the queries, keys, and values into 8 different "heads" (since num_heads=8), and each head will learn a different transformation of x in its own way.
+
+## Attention Mechanism:
+
+Each attention head computes the attention scores for the query with respect to the key (from the same input x).
+The attention score is essentially a measure of how much focus should be placed on a particular time step (in the input x) when making predictions.
+
+Dot Product: For each time step in x, the query vector for that time step is compared (via a dot product) with the key vectors of all the time steps.
+The result of this comparison is then used to compute the attention weights—i.e., how much attention each time step should pay to all other time steps in the sequence.
+
+Combining the Outputs:
+
+After computing the attention weights for each head, the weighted sum of the values is calculated.
+Each attention head outputs its own weighted sum of the values.
+
+Concatenation:
+
+Once all the heads have computed their weighted sums, these outputs are concatenated together.
+After concatenation, a final linear transformation is applied to combine all the heads' outputs into a single representation, which will be used for further processing.
+
+
+## Summary of What's Happening:
+
+MultiHeadAttention(num_heads=8, key_dim=feature_dim): This defines a multi-head attention layer with 8 attention heads. Each attention head learns a different "view" or projection of the data.
+
+(x, x): This means we are using the same input x as both the queries (Q) and the keys (K). This is a self-attention mechanism, where the model learns which parts of the input are important relative to each other.
+The attention heads each learn to focus on different parts of the input sequence, and their outputs are combined into a richer representation that the model uses for prediction.
+
+
+## In a Real-World Scenario (Example):
+Let's say you're analyzing stock prices. The input x could be the stock price data over time, and each feature could represent the price at different points (e.g., Open, Close, High, Low, Volume).
+
+The attention heads might learn to focus on:
+Head 1: Short-term trends (e.g., looking at recent fluctuations in price).
+Head 2: Long-term trends (e.g., looking at broader price movements over several days).
+Head 3: Relationships between price and volume (e.g., how volume correlates with price movements).
+
+```python
+attn_output = MultiHeadAttention(num_heads=8, key_dim=feature_dim)(x, x)
+```
 
 ## Results
 - The model predicts the next closing stock price for AAPL.
