@@ -363,8 +363,11 @@ The attention heads each learn to focus on different parts of the input sequence
 Let's say you're analyzing stock prices. The input x could be the stock price data over time, and each feature could represent the price at different points (e.g., Open, Close, High, Low, Volume).
 
 The attention heads might learn to focus on:
+
 Head 1: Short-term trends (e.g., looking at recent fluctuations in price).
+
 Head 2: Long-term trends (e.g., looking at broader price movements over several days).
+
 Head 3: Relationships between price and volume (e.g., how volume correlates with price movements).
 
 ```python
