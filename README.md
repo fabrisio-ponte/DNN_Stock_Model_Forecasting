@@ -33,6 +33,41 @@ def fetch_stock_data(ticker, period="7d", interval="1h"):
     return stock[['Open', 'High', 'Low', 'Close', 'Volume']]
 ```
 
+## 2. Fetch Financial Statements
+
+yf.Ticker(ticker): Initializes a Yahoo Finance object for the given stock ticker.
+.financials.T: Retrieves the income statement, transposed for easier row-wise access.
+.balance_sheet.T: Retrieves the balance sheet, also transposed.
+.cashflow.T: Retrieves the cash flow statement, transposed.
+
+```python
+stock = yf.Ticker(ticker)
+income_stmt = stock.financials.T  # Income Statement
+balance_sheet = stock.balance_sheet.T  # Balance Sheet
+cash_flow = stock.cashflow.T  # Cash Flow Statement
+```
+The function tries to extract specific key financial metrics:
+Income Statement: 'Total Revenue', 'Net Income'
+Balance Sheet: 'Total Assets', 'Total Liabilities'
+Cash Flow Statement: 'Operating Cash Flow'
+Concatenates the extracted data into a single DataFrame.
+
+```python
+financials = pd.concat([
+    income_stmt[['Total Revenue', 'Net Income']],  # From Income Statement
+    balance_sheet[['Total Assets', 'Total Liabilities']],  # From Balance Sheet
+    cash_flow[['Operating Cash Flow']]  # From Cash Flow Statement
+], axis=1)
+```
+Replaces NaN values with 0 to avoid issues during processing.
+```python
+financials.fillna(0, inplace=True)  # Handle missing values
+```
+Returns the final compiled financial statement DataFrame.
+```python
+return financials
+```
+
 ### 2. Fetch Financial News
 Fetches the latest financial news headlines using the Alpha Vantage API.
 ```python
