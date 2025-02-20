@@ -390,7 +390,31 @@ Why normalize here? The attention mechanism can introduce very large or very sma
 ```python
     x = LayerNormalization()(attn_output + x)
 ```
+### LSTM Layer Core Idea:
 
+An LSTM contains special components that control the flow of information over time. The key components are:
+
+Forget Gate: Decides which information to discard from the cell state.
+Input Gate: Determines which new information to store in the cell state.
+Cell State: Carries the long-term memory of the network across time steps.
+Output Gate: Decides which part of the cell state should be output as the current hidden state.
+
+f 
+t
+​
+ =σ(W 
+f
+​
+ ⋅[h 
+t−1
+​
+ ,x 
+t
+​
+ ]+b 
+f
+​
+ )
 
 ## Results
 - The model predicts the next closing stock price for AAPL.
