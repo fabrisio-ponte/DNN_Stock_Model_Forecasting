@@ -216,6 +216,85 @@ def create_hybrid_model(seq_length, feature_dim):
     return model
 ```
 
+The create_hybrid_model function defines a hybrid model combining both CNN (Convolutional Neural Network) layers and Transformer (Multi-Head Attention) layers to process sequential data like stock prices, which can benefit from capturing both local and global dependencies.
+
+Here's a breakdown of the layers and architecture:
+
+ Input Layer:
+
+ seq_length: Length of the input sequence (e.g., 30 time steps).
+feature_dim: Number of features (columns) in the dataset. This might include stock prices, sentiment scores, technical indicators, etc.
+
+The input shape is (seq_length, feature_dim), indicating sequences of seq_length time steps, with feature_dim features at each time step.
+
+```python
+ inputs = Input(shape=(seq_length, feature_dim))
+```
+
+## Convolutional Layers:
+
+Conv1D stands for 1-dimensional convolution.
+Convolution layers are used to detect patterns (features) in the data by applying filters (also called kernels) over the input.
+
+In your case, you are working with time-series data (e.g., stock prices over time), and Conv1D helps identify patterns within a window of consecutive time steps.
+
+## Parameters in Detail:
+
+Inputs:
+
+inputs represents the input layer of the model, where the data is fed into the network.
+Input(shape=(seq_length, feature_dim)) specifies the shape of the input data.
+seq_length: The number of time steps in each sequence (e.g., 30 time steps).
+feature_dim: The number of features (e.g., stock prices, technical indicators, sentiment scores) at each time step in the sequence.
+For example, if you have 30 time steps and 5 features (e.g., Open, Close, Volume, Sentiment, RSI), the input shape will be (30, 5).
+
+So, inputs is a tensor (data structure) representing the input data that will flow through the model.
+
+```python
+inputs = Input(shape=(seq_length, feature_dim))
+```
+
+Convolutional Layers CONV1D
+
+filters=128 and filters=64:
+
+This defines the number of filters (kernels) used in the convolution process.
+Filter: It's a small matrix that "slides" over the input data (e.g., the stock price time series) to extract features.
+128 filters in the first convolution layer means the model will learn 128 different features from the input data.
+64 filters in the second layer means the model will learn 64 more abstract features from the output of the first layer.
+
+kernel_size=5 and kernel_size=3:
+
+Kernel size defines the size of the sliding window the convolution filter will use to scan over the input data.
+For example, in the first Conv1D, kernel_size=5 means the filter will cover 5 consecutive time steps (e.g., 5 hours or 5 days, depending on your data).
+This means the model looks at the previous 5 steps (or time periods) to identify a feature.
+In the second Conv1D, kernel_size=3 means the filter will cover 3 consecutive time steps.
+Smaller windows help capture finer-grained patterns after the broader ones are captured in the previous layer.
+
+activation="relu":
+
+ReLU (Rectified Linear Unit) is the activation function used after each convolution operation.
+The activation function introduces non-linearity to the model, enabling it to learn more complex patterns, in each steps the price could bend more or less and capture movements that are not proportinal (not-linear) and learn this.
+
+ReLU is defined as f(x) = max(0, x), which means it outputs the input directly if it's positive, and zero otherwise. This helps the model capture non-linear relationships in the data (like stock prices).
+
+padding="same":
+
+Padding ensures that the output shape of the convolution is the same as the input shape.
+"same" padding means the model adds zero-padding (extra values) around the edges of the input data when necessary.
+This ensures the output length is the same as the input length (e.g., you don't lose time steps at the beginning or end of the series).
+Without padding, the output would shrink with each convolution step.
+
+```python
+    x = Conv1D(filters=128, kernel_size=5, activation="relu", padding="same")(inputs)
+    x = Conv1D(filters=64, kernel_size=3, activation="relu", padding="same")(x)
+```
+
+Final output first two CONV Layers:
+
+The final output is a transformed version of your stock price data, with local patterns (like price rises or falls) detected by the filters and non-linearities introduced by ReLU.
+The model can then use these transformed features to predict whether the stock price will rise or fall in the future.
+
 ## Results
 - The model predicts the next closing stock price for AAPL.
 - Compares the predicted price with actual market data.
