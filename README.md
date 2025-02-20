@@ -36,8 +36,11 @@ def fetch_stock_data(ticker, period="7d", interval="1h"):
 ## 2. Fetch Financial Statements
 
 yf.Ticker(ticker): Initializes a Yahoo Finance object for the given stock ticker.
+
 .financials.T: Retrieves the income statement, transposed for easier row-wise access.
+
 .balance_sheet.T: Retrieves the balance sheet, also transposed.
+
 .cashflow.T: Retrieves the cash flow statement, transposed.
 
 ```python
