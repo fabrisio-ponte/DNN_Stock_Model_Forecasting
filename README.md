@@ -309,6 +309,7 @@ These heads operate in parallel, learning different representations of the input
 key_dim=feature_dim:
 
 key_dim refers to the dimension of the query, key, and value vectors.
+
 feature_dim here represents the number of features in your input data (e.g., number of features in the stock price data such as Open, High, Low, Close, Volume).
 Essentially, this defines the size of the vectors that the attention mechanism operates on.
 
