@@ -50,6 +50,7 @@ balance_sheet = stock.balance_sheet.T  # Balance Sheet
 cash_flow = stock.cashflow.T  # Cash Flow Statement
 ```
 The function tries to extract specific key financial metrics:
+
 Income Statement: 'Total Revenue', 'Net Income'
 
 Balance Sheet: 'Total Assets', 'Total Liabilities'
