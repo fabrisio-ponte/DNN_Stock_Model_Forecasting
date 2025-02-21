@@ -162,7 +162,7 @@ pd.concat() merges the stock data (stock_df) with the financial data along colum
 stock_df = pd.concat([stock_df, financial_data], axis=1)
 ```
 
-## Sequence Creation:
+## 4.1 Sequence Creation:
 
 Function Arguments:
 
@@ -231,14 +231,14 @@ The input shape is (seq_length, feature_dim), indicating sequences of seq_length
  inputs = Input(shape=(seq_length, feature_dim))
 ```
 
-## Convolutional Layers:
+## 5.1 Convolutional Neural Network Layers:
 
 Conv1D stands for 1-dimensional convolution.
 Convolution layers are used to detect patterns (features) in the data by applying filters (also called kernels) over the input.
 
 In your case, you are working with time-series data (e.g., stock prices over time), and Conv1D helps identify patterns within a window of consecutive time steps.
 
-## Parameters in Detail:
+## 5.1.1 Parameters in Detail:
 
 Inputs:
 
@@ -373,7 +373,7 @@ Head 3: Relationships between price and volume (e.g., how volume correlates with
 ```python
 attn_output = MultiHeadAttention(num_heads=8, key_dim=feature_dim)(x, x)
 ```
-## Layer Normalization
+## 5.2 Layer Normalization
 
 attn_output + x:
 
@@ -390,7 +390,7 @@ Why normalize here? The attention mechanism can introduce very large or very sma
 ```python
     x = LayerNormalization()(attn_output + x)
 ```
-### LSTM Layer Core Idea:
+### 5.3 Long-Short Term Memory (LSTM) Layer Core Idea:
 
 An LSTM contains special components that control the flow of information over time. The key components are:
 
@@ -399,28 +399,28 @@ Input Gate: Determines which new information to store in the cell state.
 Cell State: Carries the long-term memory of the network across time steps.
 Output Gate: Decides which part of the cell state should be output as the current hidden state.
 
-1. Forget Gate:
+## Forget Gate:
 The forget gate controls how much of the previous memory should be forgotten or kept. It looks at the current input and the previous hidden state to decide this.
 
 Mathematical function: The forget gate computes a value between 0 and 1 (using a sigmoid function) for each piece of the cell state. A value close to 0 means "forget," while a value close to 1 means "keep."
 
 Intuition: It decides whether to forget or remember certain information in the cell state based on the current input and past hidden state. For example, in stock prices, the forget gate might decide to discard information from a few days ago if it's no longer relevant for predicting future prices.
 
-2. Input Gate:
+## Input Gate:
 The input gate decides what new information will be stored in the cell state. This new information is based on the current input and the previous hidden state.
 
 Mathematical function: The input gate uses a sigmoid activation to decide which parts of the new information should be updated, and a tanh function to generate new candidate values.
 
 Intuition: The input gate evaluates the relevance of the new input (e.g., today's stock price, volume) and adjusts the cell state accordingly, storing the most relevant information.
 
-3. Cell State:
+## Cell State:
 The cell state acts as the "memory" of the LSTM. It carries relevant information through the sequence and is updated by the forget and input gates.
 
 Mathematical function: The cell state is updated by combining the information from the forget gate and the input gate:
 
 Intuition: The cell state is continuously updated over time. The forget gate decides how much of the past memory to keep, and the input gate decides how much new information to store. This allows the network to "remember" useful information over long periods, which is crucial for sequences where past events (e.g., stock prices) have an influence on future predictions.
 
-4. Output Gate:
+## Output Gate:
 The output gate decides which part of the cell state to output as the current hidden state, which is passed to the next time step and used for predictions.
 
 Mathematical function: The output gate looks at the current input and the previous hidden state to determine which part of the cell state should be output. The final output (hidden state) is a combination of the current cell state and the output gate:
@@ -441,7 +441,7 @@ x = LSTM(64, return_sequences=True)(x)
     x = LSTM(32)(x)
 ```
 
-## Fully connected layers
+## 5.4 Fully connected layers
 
 Dense(64): This defines a fully connected layer (also called a Dense layer) with 64 units (neurons).
 
@@ -456,7 +456,7 @@ The activation function helps the model learn patterns that are not simply linea
 x = Dense(64, activation="relu")(x)
 ```
 
-Regularization Factor
+## 5.4.1 Regularization Factor
 
 Dropout(0.3): This is a dropout layer, and it's used to regularize the model. During training, it randomly "drops" (sets to zero) 30% of the neurons in this layer on each forward pass.
 This means that during each iteration, the model will ignore 30% of the neurons in this layer, forcing the network to learn more robust features and not rely too heavily on specific neurons.
@@ -470,7 +470,7 @@ In the case of stock prediction, using dropout ensures that the model doesn't me
 x = Dropout(0.3)(x)
 ```
 
-## Output Layer Final Prediction
+## 5.5 Output Layer Final Prediction
 
 Dense(1): This is another fully connected (dense) layer, but with only 1 unit.
 
@@ -491,14 +491,14 @@ Dense layers allow the model to integrate the complex features learned by earlie
 Dropout helps prevent the model from overfitting, ensuring it generalizes well to new data (which is crucial in stock market prediction because the data is highly variable).
 The output layer provides the final prediction of the stock price (or any other continuous value you are predicting).
 
-## In Summary
+## Summary of LSTM
 
 LSTM neurons "remember" by using the cell state to store relevant information, which is updated by the forget and input gates.
 The output gate controls what part of the memory is passed on to the next time step or used for predictions.
 The LSTM learns by adjusting the weights of these gates through backpropagation, ensuring that it can better capture temporal dependencies and improve prediction accuracy over time.
 
 
-## Model Optimization (Inputs and outputs)
+## 5. 6 Model Optimization: Adaptive Moment Estimation (Adam)
 
 ## Model Definition
 
@@ -532,7 +532,7 @@ Both MSE and MAE are useful for regression tasks, and MAE gives you a more inter
 model.compile(optimizer="adam", loss="mse", metrics=["mae"])
 ```
 
-## Returning Model for Train or Test
+## 5.7 Returning Model for Train or Test
 
 This returns the compiled model from the function so that you can use it for training, evaluation, or prediction outside the function.
 
