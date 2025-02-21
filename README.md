@@ -35,10 +35,10 @@ def fetch_stock_data(ticker, period="7d", interval="1h"):
 
 ## 2. Fetch Financial Statements
 
-yf.Ticker(ticker): Initializes a Yahoo Finance object for the given stock ticker.
-.financials.T: Retrieves the income statement, transposed for easier row-wise access.
-.balance_sheet.T: Retrieves the balance sheet, also transposed.
-.cashflow.T: Retrieves the cash flow statement, transposed.
+- yf.Ticker(ticker): Initializes a Yahoo Finance object for the given stock ticker.
+- .financials.T: Retrieves the income statement, transposed for easier row-wise access.
+- .balance_sheet.T: Retrieves the balance sheet, also transposed.
+- .cashflow.T: Retrieves the cash flow statement, transposed.
 
 ```python
 stock = yf.Ticker(ticker)
@@ -48,10 +48,10 @@ cash_flow = stock.cashflow.T  # Cash Flow Statement
 ```
 The function tries to extract specific key financial metrics:
 
-Income Statement: 'Total Revenue', 'Net Income'
-Balance Sheet: 'Total Assets', 'Total Liabilities'
-Cash Flow Statement: 'Operating Cash Flow'
-Concatenates the extracted data into a single DataFrame.
+- Income Statement: 'Total Revenue', 'Net Income'
+- Balance Sheet: 'Total Assets', 'Total Liabilities'
+- Cash Flow Statement: 'Operating Cash Flow'
+- Concatenates the extracted data into a single DataFrame.
 
 ```python
 financials = pd.concat([
