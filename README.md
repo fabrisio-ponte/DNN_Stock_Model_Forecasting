@@ -156,7 +156,7 @@ pd.concat() merges the stock data (stock_df) with the financial data along colum
 stock_df = pd.concat([stock_df, financial_data], axis=1)
 ```
 
-## 4.1 Sequence Creation:
+### 4.1 Sequence Creation:
 
 #### Function Arguments:
 
