@@ -191,7 +191,7 @@ The sequences and labels are converted into NumPy arrays before being returned. 
 ```python
 return np.array(sequences), np.array(labels)
 ```
-### 5. Model Architecture
+## 5. Model Architecture
 A deep learning model combining CNN, LSTM, and Transformer layers for stock price prediction.
 ```python
 def create_hybrid_model(seq_length, feature_dim):
