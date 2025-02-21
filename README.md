@@ -25,7 +25,7 @@ python main.py
 ```
 
 ## Modules
-### 1. Fetch Stock Data
+## 1. Fetch Stock Data
 Retrieves historical stock data for a specified period and interval.
 ```python
 def fetch_stock_data(ticker, period="7d", interval="1h"):
