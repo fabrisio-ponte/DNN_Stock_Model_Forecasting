@@ -1,7 +1,7 @@
-# Stock Price Prediction with Sentiment Analysis
+# Financial Market Prediction with Sentiment Analysis (FinBERT) and Deep Learning Hybrid Model (CCN, LSTM, Transformer)
 
 ## Overview
-This project predicts Apple Inc.'s (AAPL) stock price using a hybrid deep learning model combining CNN, LSTM, and Transformer architectures. It integrates sentiment analysis from financial news to improve prediction accuracy.
+This project predicts a single stock's price using a hybrid deep learning model that combines CNN, LSTM, and Transformer architectures. It integrates sentiment analysis from financial news to enhance prediction accuracy.
 
 ## Features
 - Fetches real-time stock market data using `yfinance`
