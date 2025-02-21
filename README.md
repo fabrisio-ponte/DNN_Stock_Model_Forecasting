@@ -395,28 +395,28 @@ Input Gate: Determines which new information to store in the cell state.
 Cell State: Carries the long-term memory of the network across time steps.
 Output Gate: Decides which part of the cell state should be output as the current hidden state.
 
-## Forget Gate:
+### Forget Gate:
 The forget gate controls how much of the previous memory should be forgotten or kept. It looks at the current input and the previous hidden state to decide this.
 
 Mathematical function: The forget gate computes a value between 0 and 1 (using a sigmoid function) for each piece of the cell state. A value close to 0 means "forget," while a value close to 1 means "keep."
 
 Intuition: It decides whether to forget or remember certain information in the cell state based on the current input and past hidden state. For example, in stock prices, the forget gate might decide to discard information from a few days ago if it's no longer relevant for predicting future prices.
 
-## Input Gate:
+### Input Gate:
 The input gate decides what new information will be stored in the cell state. This new information is based on the current input and the previous hidden state.
 
 Mathematical function: The input gate uses a sigmoid activation to decide which parts of the new information should be updated, and a tanh function to generate new candidate values.
 
 Intuition: The input gate evaluates the relevance of the new input (e.g., today's stock price, volume) and adjusts the cell state accordingly, storing the most relevant information.
 
-## Cell State:
+### Cell State:
 The cell state acts as the "memory" of the LSTM. It carries relevant information through the sequence and is updated by the forget and input gates.
 
 Mathematical function: The cell state is updated by combining the information from the forget gate and the input gate:
 
 Intuition: The cell state is continuously updated over time. The forget gate decides how much of the past memory to keep, and the input gate decides how much new information to store. This allows the network to "remember" useful information over long periods, which is crucial for sequences where past events (e.g., stock prices) have an influence on future predictions.
 
-## Output Gate:
+### Output Gate:
 The output gate decides which part of the cell state to output as the current hidden state, which is passed to the next time step and used for predictions.
 
 Mathematical function: The output gate looks at the current input and the previous hidden state to determine which part of the cell state should be output. The final output (hidden state) is a combination of the current cell state and the output gate:
