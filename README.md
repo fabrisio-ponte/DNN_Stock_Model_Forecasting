@@ -25,7 +25,7 @@ python main.py
 ```
 
 ## Modules
-## 1. Fetch Stock Data
+### 1. Fetch Stock Data
 Retrieves historical stock data for a specified period and interval.
 ```python
 def fetch_stock_data(ticker, period="7d", interval="1h"):
@@ -33,7 +33,7 @@ def fetch_stock_data(ticker, period="7d", interval="1h"):
     return stock[['Open', 'High', 'Low', 'Close', 'Volume']]
 ```
 
-## 2. Fetch Financial Statements
+### 2. Fetch Financial Statements
 
 - yf.Ticker(ticker): Initializes a Yahoo Finance object for the given stock ticker.
 - .financials.T: Retrieves the income statement, transposed for easier row-wise access.
