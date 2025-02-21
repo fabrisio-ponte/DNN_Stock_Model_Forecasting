@@ -549,5 +549,5 @@ This project is open-source and available under the MIT License.
 ## Contact
 For further inquiries, contact:
 - Email: fabrisio.ponte@gmail.com
-- LinkedIn: [Your Profile](https://linkedin.com/in/fabrisio-ponte)
+- LinkedIn: [[Your Profile](https://linkedin.com/in/fabrisio-ponte)](https://www.linkedin.com/in/fabrisio-ponte-vela/)
 
