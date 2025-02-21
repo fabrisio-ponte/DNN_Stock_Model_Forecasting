@@ -128,7 +128,7 @@ Merges sentiment data into stock dataset and normalizes features.
 
 This function preprocess_data is designed to prepare the stock data by adding sentiment scores and merging relevant financial data for further analysis. Here's a step-by-step explanation:
 
-Add Sentiment Scores:
+#### Add Sentiment Scores:
 
 np.random.choice(sentiment_scores, size=len(stock_df)) randomly selects sentiment scores from the provided sentiment_scores list and assigns them to the new column. This is done randomly, which may not be ideal if sentiment data is meant to be linked with the stock data based on news articles (e.g., each news headline should correspond to specific stock data).
 
@@ -138,7 +138,7 @@ Potential Issue: The sentiment scores are being assigned randomly, which might n
 stock_df["Sentiment"] = np.random.choice(sentiment_scores, size=len(stock_df))
 ```
 
-Align Financial Data to Stock Data Dates:
+#### Align Financial Data to Stock Data Dates:
 
 reindex(): This re-aligns the financial data to the dates of the stock data (stock_df).
 method='ffill': The forward fill method is used, meaning that if a financial value for a specific date is missing, the function fills it with the most recent available value.
@@ -148,7 +148,7 @@ This ensures that financial data is properly aligned with the dates in the stock
 financial_data = financial_data.reindex(stock_df.index, method='ffill')
 ```
 
-Merge Stock Data with Financial Data:
+#### Merge Stock Data with Financial Data:
 
 pd.concat() merges the stock data (stock_df) with the financial data along columns (axis=1). After this step, the stock_df will include additional financial features like revenue, net income, etc., in addition to the stock price and sentiment.
 
@@ -158,7 +158,7 @@ stock_df = pd.concat([stock_df, financial_data], axis=1)
 
 ## 4.1 Sequence Creation:
 
-Function Arguments:
+#### Function Arguments:
 
 data: This is the dataset containing stock features and additional data (e.g., stock price, sentiment, financial indicators). It’s expected to be a 2D array or DataFrame with shape (num_samples, num_features).
 seq_length=30: This is the length of the sequence. The default is 30, meaning the model will use the previous 30 time steps to predict the next stock price.
@@ -167,7 +167,7 @@ seq_length=30: This is the length of the sequence. The default is 30, meaning th
 def create_sequences(data, seq_length=30):
 ```
 
- Loop to Create Sequences:
+ #### Loop to Create Sequences:
  
  Looping through the data: The loop iterates through the dataset, creating sequences of the previous seq_length time steps (30 by default).
  
@@ -181,7 +181,7 @@ for i in range(len(data) - seq_length):
         labels.append(data[i+seq_length, 3])
 ```
 
-Return sequences of labels:
+#### Return sequences of labels:
 
 sequences: A list of sequences of length seq_length, where each sequence is a slice of the historical data.
 labels: A list of corresponding labels (closing prices) for each sequence, which the model will predict.
@@ -214,7 +214,7 @@ The create_hybrid_model function defines a hybrid model combining both CNN (Conv
 
 Here's a breakdown of the layers and architecture:
 
- Input Layer:
+ #### Input Layer:
 
  seq_length: Length of the input sequence (e.g., 30 time steps).
 feature_dim: Number of features (columns) in the dataset. This might include stock prices, sentiment scores, technical indicators, etc.
@@ -234,7 +234,7 @@ In your case, you are working with time-series data (e.g., stock prices over tim
 
 ## 5.1.1 Parameters in Detail:
 
-Inputs:
+#### Inputs:
 
 inputs represents the input layer of the model, where the data is fed into the network.
 Input(shape=(seq_length, feature_dim)) specifies the shape of the input data.
@@ -248,7 +248,7 @@ So, inputs is a tensor (data structure) representing the input data that will fl
 inputs = Input(shape=(seq_length, feature_dim))
 ```
 
-Convolutional Layers CONV1D
+#### Convolutional Layers CONV1D
 
 filters=128 and filters=64:
 
@@ -283,7 +283,7 @@ Without padding, the output would shrink with each convolution step.
     x = Conv1D(filters=128, kernel_size=5, activation="relu", padding="same")(inputs)
     x = Conv1D(filters=64, kernel_size=3, activation="relu", padding="same")(x)
 ```
-Final output first two CONV Layers:
+#### Final output first two CONV Layers:
 
 The final output is a transformed version of your stock price data, with local patterns (like price rises or falls) detected by the filters and non-linearities introduced by ReLU.
 The model can then use these transformed features to predict whether the stock price will rise or fall in the future.
@@ -315,12 +315,12 @@ In other words, you're saying: "I want to compute how each part of the sequence 
 
 ## How Does it Work?
 
-Input Data (x):
+#### Input Data (x):
 
 Your input x is stock data over time, where each time step has several features (e.g., Open, High, Low, Close, Volume).
 Suppose x is a sequence of 5 time steps, and each time step has feature_dim features (e.g., Open, High, Low, Close, Volume).
 
-Query, Key, and Value:
+#### Query, Key, and Value:
 
 For each attention head, the input x is used to create three representations: queries, keys, and values. These are done using learned linear transformations (weights) specific to each attention head.
 
@@ -331,15 +331,17 @@ The MultiHeadAttention layer will split the queries, keys, and values into 8 dif
 Each attention head computes the attention scores for the query with respect to the key (from the same input x).
 The attention score is essentially a measure of how much focus should be placed on a particular time step (in the input x) when making predictions.
 
-Dot Product: For each time step in x, the query vector for that time step is compared (via a dot product) with the key vectors of all the time steps.
+#### Dot Product
+
+For each time step in x, the query vector for that time step is compared (via a dot product) with the key vectors of all the time steps.
 The result of this comparison is then used to compute the attention weights—i.e., how much attention each time step should pay to all other time steps in the sequence.
 
-Combining the Outputs:
+#### Combining the Outputs
 
 After computing the attention weights for each head, the weighted sum of the values is calculated.
 Each attention head outputs its own weighted sum of the values.
 
-Concatenation:
+#### Concatenation
 
 Once all the heads have computed their weighted sums, these outputs are concatenated together.
 After concatenation, a final linear transformation is applied to combine all the heads' outputs into a single representation, which will be used for further processing.
@@ -353,7 +355,7 @@ MultiHeadAttention(num_heads=8, key_dim=feature_dim): This defines a multi-head 
 The attention heads each learn to focus on different parts of the input sequence, and their outputs are combined into a richer representation that the model uses for prediction.
 
 
-## In a Real-World Scenario (Example):
+### In a Real-World Scenario (Example):
 Let's say you're analyzing stock prices. The input x could be the stock price data over time, and each feature could represent the price at different points (e.g., Open, Close, High, Low, Volume).
 
 The attention heads might learn to focus on:
