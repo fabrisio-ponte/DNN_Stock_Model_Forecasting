@@ -544,10 +544,10 @@ return model
 - Compares the predicted price with actual market data.
 
 ## License
-This project is open-source and available under the MIT License.
+This project is open-source and available under the MIT license.
 
 ## Contact
 For further inquiries, contact:
 - Email: fabrisio.ponte@gmail.com
-- LinkedIn: (https://linkedin.com/in/fabrisio-ponte)](https://www.linkedin.com/in/fabrisio-ponte-vela/)
+- LinkedIn: https://linkedin.com/in/fabrisio-ponte)](https://www.linkedin.com/in/fabrisio-ponte-vela/
 
