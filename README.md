@@ -111,7 +111,7 @@ def analyze_sentiment(texts):
     results = sentiment_model(texts, truncation=True, max_length=512)
     return [1 if res['label'] == 'positive' else (-1 if res['label'] == 'negative' else 0) for res in results]
 ```
-Sentiment Mapping:
+#### Sentiment Mapping:
 
 The function processes the model’s results:
 1 for positive sentiment,
