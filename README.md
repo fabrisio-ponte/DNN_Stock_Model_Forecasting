@@ -1,4 +1,4 @@
-# Stock Modeling with sentiment analysis (FinBERT) and hybrid deep learning (CCN, LSTM, Transformer)
+# Stock Modeling with sentiment analysis (FinBERT) and hybrid deep learning (CNN, LSTM, Transformer)
 
 ## Overview
 This project predicts a single stock's price using a hybrid deep learning model that combines Convolutional Neural Networks , Long Short Term Memory and Transformer architectures. It integrates sentiment analysis from financial news to enhance prediction accuracy.
